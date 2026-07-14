@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoyla | Coach & Terapeuta - Tu espacio de crecimiento</title>
+    <meta name="description" content="Espacio terapéutico y de coaching guiado por Zoyla. Agenda tus citas, gestiona tu bienestar y encuentra tu camino de crecimiento personal.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons (Lucide Icons via CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="main-nav">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo" id="nav-logo-link">
+                <span class="logo-dot"></span>
+                Zoyla
+            </a>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#hero" class="nav-link active">Inicio</a>
+                <a href="#about" class="nav-link">Sobre Mí</a>
+                <a href="#services" class="nav-link">Servicios</a>
+                <a href="#booking" class="btn btn-primary btn-sm">Reservar Cita</a>
+                <span class="nav-divider"></span>
+                <button class="btn btn-text btn-icon" id="admin-login-btn" title="Acceso Profesional">
+                    <i data-lucide="lock"></i>
+                    <span>Panel Pro</span>
+                </button>
+            </div>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- App Wrapper for SPA Views -->
+    <main class="app-wrapper">
+        
+        <!-- ========================================== -->
+        <!-- PUBLIC VIEW                                -->
+        <!-- ========================================== -->
+        <div id="public-view" class="view-section active">
+            <!-- Hero Section -->
+            <section id="hero" class="hero-section">
+                <div class="hero-bg-accent"></div>
+                <div class="container hero-container">
+                    <div class="hero-content">
+                        <span class="badge">Bienvenida a tu transformación</span>
+                        <h1>Encuentra tu equilibrio y florece en tu propio camino</h1>
+                        <p class="hero-subtitle">Sesiones de coaching y terapia personalizadas para ayudarte a superar bloqueos, reconectar con tu esencia y diseñar una vida alineada con tu propósito.</p>
+                        <div class="hero-actions">
+                            <a href="#booking" class="btn btn-primary btn-lg">Reserva una Sesión</a>
+                            <a href="#services" class="btn btn-secondary btn-lg">Explorar Servicios</a>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <span class="stat-num">10+</span>
+                                <span class="stat-label">Años de Guía</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num">500+</span>
+                                <span class="stat-label">Vidas Transformadas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-image-wrapper">
+                        <div class="hero-img-backdrop"></div>
+                        <div class="hero-img-card">
+                            <div class="card-inner">
+                                <i data-lucide="heart" class="icon-heart"></i>
+                                <h3>Enfoque Holístico</h3>
+                                <p>Cuerpo, mente y emociones en perfecta sintonía.</p>
+                            </div>
+                        </div>
+                        <!-- Placeholder decorative circle -->
+                        <div class="decorative-blob"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="about-section">
+                <div class="container">
+                    <div class="about-grid">
+                        <div class="about-info">
+                            <span class="badge">Sobre Mí</span>
+                            <h2>Hola, soy Zoyla</h2>
+                            <p class="lead">Acompaño a personas en sus procesos de transición, autoconocimiento y empoderamiento personal.</p>
+                            <p>Mi enfoque combina herramientas de coaching existencial, terapia gestalt y mindfulness. Creo firmemente que cada persona posee los recursos necesarios para sanar y expandirse; mi labor es facilitar el espacio seguro, cálido y libre de juicio donde puedas redescubrirlos.</p>
+                            <div class="pillars">
+                                <div class="pillar-item">
+                                    <div class="pillar-icon"><i data-lucide="shield-check"></i></div>
+                                    <div>
+                                        <h4>Espacio Seguro</h4>
+                                        <p>Confidencialidad absoluta y escucha empática libre de juicios.</p>
+                                    </div>
+                                </div>
+                                <div class="pillar-item">
+                                    <div class="pillar-icon"><i data-lucide="sparkles"></i></div>
+                                    <div>
+                                        <h4>Proceso Personalizado</h4>
+                                        <p>Adaptado a tu ritmo, tus necesidades y tus metas reales.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="about-visual">
+                            <div class="quotes-card">
+                                <i data-lucide="quote" class="quote-icon"></i>
+                                <p class="quote-text">"El cambio no ocurre cuando intentamos ser lo que no somos, sino cuando aceptamos plenamente lo que somos."</p>
+                                <span class="quote-author">— Enfoque Terapéutico</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services" class="services-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">Servicios</span>
+                        <h2>Cómo podemos trabajar juntos</h2>
+                        <p class="section-subtitle">Sesiones presenciales y online adaptadas a tus objetivos de vida y bienestar emocional.</p>
+                    </div>
+                    <div class="services-grid" id="services-list-container">
+                        <!-- Dynamic Services Loaded Here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Booking Section -->
+            <section id="booking" class="booking-section">
+                <div class="container">
+                    <div class="booking-card">
+                        <div class="booking-header">
+                            <h2>Reserva tu sesión en línea</h2>
+                            <p>Elige el servicio, el día y la hora que mejor se adapten a ti. Recibirás una confirmación instantánea.</p>
+                        </div>
+                        
+                        <!-- Booking Steps Wizard -->
+                        <div class="booking-wizard">
+                            <!-- Step indicator -->
+                            <div class="wizard-steps">
+                                <div class="w-step active" data-step="1">
+                                    <span class="w-step-num">1</span>
+                                    <span class="w-step-label">Servicio</span>
+                                </div>
+                                <div class="w-step" data-step="2">
+                                    <span class="w-step-num">2</span>
+                                    <span class="w-step-label">Fecha y Hora</span>
+                                </div>
+                                <div class="w-step" data-step="3">
+                                    <span class="w-step-num">3</span>
+                                    <span class="w-step-label">Tus Datos</span>
+                                </div>
+                            </div>
+
+                            <!-- Step 1: Select Service -->
+                            <div class="wizard-content active" id="step-1-content">
+                                <h3 class="step-title">Selecciona un servicio</h3>
+                                <div class="booking-services-grid" id="booking-services-options">
+                                    <!-- Dynamic Options -->
+                                </div>
+                                <div class="wizard-footer">
+                                    <button class="btn btn-primary" id="goto-step-2" disabled>Continuar <i data-lucide="arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Date and Time -->
+                            <div class="wizard-content" id="step-2-content">
+                                <h3 class="step-title">Selecciona fecha y hora</h3>
+                                <div class="datetime-picker-grid">
+                                    <!-- Calendar container -->
+                                    <div class="calendar-container">
+                                        <div class="calendar-header">
+                                            <button class="calendar-nav-btn" id="prev-month-btn"><i data-lucide="chevron-left"></i></button>
+                                            <span class="calendar-current-month" id="calendar-month-year">Julio 2026</span>
+                                            <button class="calendar-nav-btn" id="next-month-btn"><i data-lucide="chevron-right"></i></button>
+                                        </div>
+                                        <div class="calendar-weekdays">
+                                            <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+                                        </div>
+                                        <div class="calendar-days" id="calendar-days-grid">
+                                            <!-- Dynamic Days -->
+                                        </div>
+                                    </div>
+                                    <!-- Time slots -->
+                                    <div class="time-slots-container">
+                                        <h4 class="time-slots-title" id="selected-date-label">Selecciona un día</h4>
+                                        <div class="time-slots-grid" id="time-slots-grid">
+                                            <!-- Dynamic Time Slots -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-footer">
+                                    <button class="btn btn-secondary" id="back-to-step-1"><i data-lucide="arrow-left"></i> Atrás</button>
+                                    <button class="btn btn-primary" id="goto-step-3" disabled>Continuar <i data-lucide="arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Client Info & Confirmation -->
+                            <div class="wizard-content" id="step-3-content">
+                                <h3 class="step-title">Introduce tus datos</h3>
+                                <form id="booking-form" class="booking-form">
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label for="client-name">Nombre Completo *</label>
+                                            <input type="text" id="client-name" required placeholder="Ej. Ana García">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="client-email">Correo Electrónico *</label>
+                                            <input type="email" id="client-email" required placeholder="ejemplo@correo.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="client-phone">Teléfono / WhatsApp *</label>
+                                            <input type="tel" id="client-phone" required placeholder="Ej. +34 600 000 000">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="booking-notes">¿Hay algo que quieras comentarme antes de la sesión? (Opcional)</label>
+                                            <textarea id="booking-notes" rows="3" placeholder="Describe brevemente lo que deseas abordar..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Reservation Summary Card -->
+                                    <div class="reservation-summary">
+                                        <h4>Resumen de la Cita</h4>
+                                        <div class="summary-details">
+                                            <p><strong>Servicio:</strong> <span id="summary-service">-</span></p>
+                                            <p><strong>Fecha y Hora:</strong> <span id="summary-datetime">-</span></p>
+                                            <p><strong>Precio:</strong> <span id="summary-price">-</span></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="wizard-footer">
+                                        <button type="button" class="btn btn-secondary" id="back-to-step-2"><i data-lucide="arrow-left"></i> Atrás</button>
+                                        <button type="submit" class="btn btn-primary" id="confirm-booking-btn">Confirmar Reserva <i data-lucide="check"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Step 4: Success Message -->
+                            <div class="wizard-content" id="step-success-content">
+                                <div class="success-message">
+                                    <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
+                                    <h3>¡Cita reservada con éxito!</h3>
+                                    <p>Tu solicitud ha sido registrada. Zoyla revisará los detalles y te llegará un correo de confirmación de inmediato.</p>
+                                    <div class="booked-details-card">
+                                        <p><strong>Código de reserva:</strong> <span id="success-booking-code">#Z-1024</span></p>
+                                        <p><strong>Sesión:</strong> <span id="success-service-name">Coaching de Vida</span></p>
+                                        <p><strong>Fecha:</strong> <span id="success-date-time">Lunes, 18 de Julio a las 10:00</span></p>
+                                    </div>
+                                    <button class="btn btn-primary" id="reset-booking-btn">Volver a la Agenda</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
+            <section class="testimonials-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">Testimonios</span>
+                        <h2>Experiencias de transformación</h2>
+                    </div>
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <i data-lucide="quote" class="quote-accent"></i>
+                            <p>"Las sesiones con Zoyla marcaron un antes y un después en mi carrera. Su capacidad para hacerme ver mis propios autosabotajes fue clave para dar el salto profesional que necesitaba."</p>
+                            <div class="client-meta">
+                                <strong>Marta R.</strong>
+                                <span>Coaching de Liderazgo</span>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <i data-lucide="quote" class="quote-accent"></i>
+                            <p>"Llegué a la terapia Gestalt sintiendo un vacío inmenso. Zoyla me brindó un espacio increíblemente compasivo donde pude procesar mi duelo y volver a conectar con el presente."</p>
+                            <div class="client-meta">
+                                <strong>Carlos M.</strong>
+                                <span>Terapia Individual</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- ADMIN DASHBOARD VIEW                       -->
+        <!-- ========================================== -->
+        <div id="admin-view" class="view-section">
+            <div class="admin-layout">
+                <!-- Sidebar -->
+                <aside class="admin-sidebar">
+                    <div class="sidebar-header">
+                        <span class="logo-dot"></span>
+                        <h4>Zoyla <span class="badge-pro">PRO</span></h4>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li>
+                            <button class="sidebar-link active" data-tab="dashboard">
+                                <i data-lucide="layout-dashboard"></i> Dashboard
+                            </button>
+                        </li>
+                        <li>
+                            <button class="sidebar-link" data-tab="appointments">
+                                <i data-lucide="calendar"></i> Agenda
+                            </button>
+                        </li>
+                        <li>
+                            <button class="sidebar-link" data-tab="clients">
+                                <i data-lucide="users"></i> Clientes
+                            </button>
+                        </li>
+                        <li>
+                            <button class="sidebar-link" data-tab="services-settings">
+                                <i data-lucide="activity"></i> Servicios
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="sidebar-footer">
+                        <button class="btn btn-text btn-block" id="admin-logout-btn">
+                            <i data-lucide="log-out"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- Content Area -->
+                <section class="admin-content-area">
+                    <!-- Dashboard Tab -->
+                    <div class="admin-tab active" id="tab-dashboard">
+                        <div class="admin-header">
+                            <div>
+                                <h1>Hola, Zoyla</h1>
+                                <p class="subtitle">Este es el resumen de tu consulta para hoy.</p>
+                            </div>
+                            <div class="admin-quick-actions">
+                                <button class="btn btn-primary btn-sm" id="btn-quick-new-appointment">
+                                    <i data-lucide="plus"></i> Nueva Cita
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Stats Grid -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon-wrapper blue"><i data-lucide="calendar-days"></i></div>
+                                <div class="stat-info">
+                                    <h3>Citas de Hoy</h3>
+                                    <span class="stat-value" id="stats-today-count">0</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon-wrapper green"><i data-lucide="users"></i></div>
+                                <div class="stat-info">
+                                    <h3>Clientes Activos</h3>
+                                    <span class="stat-value" id="stats-clients-count">0</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon-wrapper purple"><i data-lucide="trending-up"></i></div>
+                                <div class="stat-info">
+                                    <h3>Horas Completadas</h3>
+                                    <span class="stat-value" id="stats-hours-count">0h</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Row: Today's agenda & Pending confirmations -->
+                        <div class="dashboard-row">
+                            <div class="dash-card flex-2">
+                                <div class="card-header">
+                                    <h3>Citas Pendientes de Hoy</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="appointment-list-simple" id="dashboard-today-list">
+                                        <!-- Dynamic load -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dash-card flex-1">
+                                <div class="card-header">
+                                    <h3>Acceso Rápido Clientes</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="client-quick-list" id="dashboard-client-list">
+                                        <!-- Dynamic load -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appointments Tab -->
+                    <div class="admin-tab" id="tab-appointments">
+                        <div class="admin-header">
+                            <div>
+                                <h1>Tu Agenda de Citas</h1>
+                                <p class="subtitle">Visualiza, confirma o reagenda tus sesiones.</p>
+                            </div>
+                            <div class="admin-filter-bar">
+                                <select id="filter-appointment-status" class="form-input-sm">
+                                    <option value="all">Todos los estados</option>
+                                    <option value="pending">Pendientes</option>
+                                    <option value="confirmed">Confirmados</option>
+                                    <option value="completed">Completados</option>
+                                    <option value="cancelled">Cancelados</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="dash-card">
+                            <div class="card-body table-responsive">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Cliente</th>
+                                            <th>Servicio</th>
+                                            <th>Fecha y Hora</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointments-table-body">
+                                        <!-- Loaded Dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clients Tab -->
+                    <div class="admin-tab" id="tab-clients">
+                        <div class="admin-header">
+                            <div>
+                                <h1>Gestión de Clientes</h1>
+                                <p class="subtitle">Revisa el historial y añade notas de evolución de tus clientes.</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary btn-sm" id="btn-add-client">
+                                    <i data-lucide="plus-circle"></i> Nuevo Cliente
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="clients-layout">
+                            <div class="clients-list-pane card">
+                                <div class="search-bar">
+                                    <i data-lucide="search" class="search-icon"></i>
+                                    <input type="text" id="search-clients-input" placeholder="Buscar por nombre o correo...">
+                                </div>
+                                <div class="clients-list-container" id="admin-clients-list">
+                                    <!-- Loaded Dynamically -->
+                                </div>
+                            </div>
+                            
+                            <div class="client-detail-pane card" id="client-detail-pane">
+                                <div class="empty-state" id="client-detail-empty">
+                                    <i data-lucide="user" class="large-icon"></i>
+                                    <h3>Selecciona un cliente</h3>
+                                    <p>Haz clic en un cliente de la lista de la izquierda para ver su historial, notas de sesión y detalles de contacto.</p>
+                                </div>
+                                <div class="client-detail-content hidden" id="client-detail-content">
+                                    <!-- Loaded Dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Services Settings Tab -->
+                    <div class="admin-tab" id="tab-services-settings">
+                        <div class="admin-header">
+                            <div>
+                                <h1>Configuración de Servicios</h1>
+                                <p class="subtitle">Crea, edita o elimina los servicios y tarifas que ofreces.</p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" id="btn-add-service">
+                                <i data-lucide="plus"></i> Nuevo Servicio
+                            </button>
+                        </div>
+                        <div class="services-settings-grid" id="admin-services-grid">
+                            <!-- Loaded Dynamically -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="main-footer">
+        <div class="container footer-container">
+            <p>&copy; 2026 Zoyla - Coach & Terapeuta. Todos los derechos reservados.</p>
+            <p class="footer-tagline">Espacio seguro de transformación y bienestar.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL: LOGIN -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-container modal-sm">
+            <button class="modal-close" id="close-login-modal"><i data-lucide="x"></i></button>
+            <div class="modal-header">
+                <h3>Acceso al Panel Profesional</h3>
+                <p>Identifícate para ver tu agenda e historial.</p>
+            </div>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" required value="zoyla@bienestar.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" required value="zoyla123">
+                    <span class="help-text">Credenciales demo: zoyla@bienestar.com / zoyla123</span>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD CLIENT -->
+    <div class="modal-overlay" id="add-client-modal">
+        <div class="modal-container modal-sm">
+            <button class="modal-close" id="close-add-client-modal"><i data-lucide="x"></i></button>
+            <div class="modal-header">
+                <h3>Añadir Nuevo Cliente</h3>
+            </div>
+            <form id="add-client-form">
+                <div class="form-group">
+                    <label for="new-client-name">Nombre Completo *</label>
+                    <input type="text" id="new-client-name" required placeholder="Ej. Javier López">
+                </div>
+                <div class="form-group">
+                    <label for="new-client-email">Correo Electrónico *</label>
+                    <input type="email" id="new-client-email" required placeholder="javier@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label for="new-client-phone">Teléfono *</label>
+                    <input type="tel" id="new-client-phone" required placeholder="+34 699 999 999">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-block">Guardar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD SERVICE -->
+    <div class="modal-overlay" id="add-service-modal">
+        <div class="modal-container modal-sm">
+            <button class="modal-close" id="close-add-service-modal"><i data-lucide="x"></i></button>
+            <div class="modal-header">
+                <h3 id="service-modal-title">Añadir Nuevo Servicio</h3>
+            </div>
+            <form id="add-service-form">
+                <input type="hidden" id="edit-service-id">
+                <div class="form-group">
+                    <label for="new-service-name">Nombre del Servicio *</label>
+                    <input type="text" id="new-service-name" required placeholder="Ej. Terapia de Pareja">
+                </div>
+                <div class="form-group">
+                    <label for="new-service-description">Descripción *</label>
+                    <textarea id="new-service-description" required rows="3" placeholder="En qué consiste el servicio..."></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="new-service-duration">Duración (minutos) *</label>
+                        <input type="number" id="new-service-duration" required min="15" value="60">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-service-price">Precio (€) *</label>
+                        <input type="number" id="new-service-price" required min="0" value="60">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="new-service-icon">Icono (Lucide)</label>
+                    <select id="new-service-icon" class="form-input">
+                        <option value="heart">Corazón (Cuidado/Emocional)</option>
+                        <option value="sparkles">Destellos (Crecimiento)</option>
+                        <option value="users">Usuarios (Pareja/Grupal)</option>
+                        <option value="brain">Cerebro (Terapia Cognitiva)</option>
+                        <option value="smile">Sonrisa (Bienestar)</option>
+                        <option value="compass">Brújula (Coaching/Dirección)</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-block" id="btn-save-service">Guardar Servicio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: QUICK NEW APPOINTMENT (ADMIN) -->
+    <div class="modal-overlay" id="quick-appointment-modal">
+        <div class="modal-container modal-sm">
+            <button class="modal-close" id="close-quick-app-modal"><i data-lucide="x"></i></button>
+            <div class="modal-header">
+                <h3>Crear Cita Manualmente</h3>
+            </div>
+            <form id="quick-app-form">
+                <div class="form-group">
+                    <label for="quick-app-client">Cliente *</label>
+                    <select id="quick-app-client" required>
+                        <!-- Dynamic list of clients -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quick-app-service">Servicio *</label>
+                    <select id="quick-app-service" required>
+                        <!-- Dynamic list of services -->
+                    </select>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="quick-app-date">Fecha *</label>
+                        <input type="date" id="quick-app-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quick-app-time">Hora *</label>
+                        <input type="time" id="quick-app-time" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-block">Agendar Cita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

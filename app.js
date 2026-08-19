@@ -134,8 +134,8 @@ const DEFAULT_SITE_CONTENT = {
     // Campos de Branding, SEO & Schema.org (Cuestionario)
     proTitle: "Psicoterapeuta Gestalt & Coach Ontológico",
     brandName: "Zoyla - Terapia Gestalt & Coaching",
-    valueProp: "Espacio profesional de terapia Gestalt, coaching ontológico y mindfulness.",
-    knowsAbout: "Terapia Gestalt, Coaching Ontológico, Mindfulness, Desarrollo Personal",
+    valueProp: "Espacio profesional de acompañamiento integral de cuerpo, mente y espíritu (Terapia Gestalt, Coaching Ontológico y Mindfulness).",
+    knowsAbout: "Terapia Gestalt, Coaching Ontológico, Mindfulness, Desarrollo Personal, Salud Integral",
     priceRange: "45€ - 70€",
     location: "España (Online / Presencial)",
     faq1q: "¿En qué consiste la Terapia Individual Gestalt?",
@@ -211,9 +211,9 @@ class AppState {
             "@context": "https://schema.org",
             "@graph": [
                 {
-                    "@type": "HealthAndBeautyBusiness",
+                    "@type": "ProfessionalService",
                     "@id": "https://zoyla.com/#business",
-                    "name": c.brandName || "Zoyla - Terapia Gestalt & Coaching",
+                    "name": c.brandName || "Zoyla - Terapia Gestalt & Coaching Ontológico",
                     "url": "https://zoyla.com/",
                     "description": c.valueProp || c.heroSubtitle,
                     "priceRange": c.priceRange || "45€ - 70€",

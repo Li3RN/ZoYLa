@@ -130,7 +130,20 @@ const DEFAULT_SITE_CONTENT = {
     diagTitle: "¿Cómo identificamos y abordamos tu situación?",
     diagSubtitle: "Un proceso estructurado para guiarte desde la inquietud inicial hasta el bienestar sostenido.",
     servicesTitle: "Cómo podemos trabajar juntos",
-    bookingTitle: "Reserva tu sesión en línea"
+    bookingTitle: "Reserva tu sesión en línea",
+    // Campos de Branding, SEO & Schema.org (Cuestionario)
+    proTitle: "Psicoterapeuta Gestalt & Coach Ontológico",
+    brandName: "Zoyla - Terapia Gestalt & Coaching",
+    valueProp: "Espacio profesional de terapia Gestalt, coaching ontológico y mindfulness.",
+    knowsAbout: "Terapia Gestalt, Coaching Ontológico, Mindfulness, Desarrollo Personal",
+    priceRange: "45€ - 70€",
+    location: "España (Online / Presencial)",
+    faq1q: "¿En qué consiste la Terapia Individual Gestalt?",
+    faq1a: "Es un enfoque terapéutico en el aquí y ahora para la gestión emocional, la resolución de bloqueos existenciales y la autoaceptación.",
+    faq2q: "¿Cómo me beneficia el Coaching Ontológico?",
+    faq2a: "Te ayuda a redefinir metas de vida personales y profesionales superando creencias limitantes.",
+    faq3q: "¿Las sesiones son online o presenciales?",
+    faq3a: "Ofrecemos ambas modalidades con la misma cercanía y eficacia mediante videollamada o consulta presencial."
 };
 
 // App State Management
@@ -161,6 +174,65 @@ class AppState {
 
         const headingDiag = document.getElementById("diagnostic-heading");
         if (headingDiag && c.diagTitle) headingDiag.innerText = c.diagTitle;
+
+        // Actualización dinámica de metadatos Schema.org JSON-LD para SEO e IA
+        this.updateSchemaOrg(c);
+    }
+
+    updateSchemaOrg(c) {
+        const jsonLdScript = document.querySelector('script[type="application/ld+json"]');
+        if (!jsonLdScript) return;
+
+        const knowsList = (c.knowsAbout || "").split(',').map(s => s.trim()).filter(Boolean);
+        const faqEntities = [];
+        if (c.faq1q && c.faq1a) {
+            faqEntities.push({
+                "@type": "Question",
+                "name": c.faq1q,
+                "acceptedAnswer": { "@type": "Answer", "text": c.faq1a }
+            });
+        }
+        if (c.faq2q && c.faq2a) {
+            faqEntities.push({
+                "@type": "Question",
+                "name": c.faq2q,
+                "acceptedAnswer": { "@type": "Answer", "text": c.faq2a }
+            });
+        }
+        if (c.faq3q && c.faq3a) {
+            faqEntities.push({
+                "@type": "Question",
+                "name": c.faq3q,
+                "acceptedAnswer": { "@type": "Answer", "text": c.faq3a }
+            });
+        }
+
+        const schemaData = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "HealthAndBeautyBusiness",
+                    "@id": "https://zoyla.com/#business",
+                    "name": c.brandName || "Zoyla - Terapia Gestalt & Coaching",
+                    "url": "https://zoyla.com/",
+                    "description": c.valueProp || c.heroSubtitle,
+                    "priceRange": c.priceRange || "45€ - 70€",
+                    "knowsAbout": knowsList.length > 0 ? knowsList : ["Terapia Gestalt", "Coaching Ontológico", "Mindfulness"],
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": c.location || "España",
+                        "addressCountry": "ES"
+                    }
+                },
+                {
+                    "@type": "FAQPage",
+                    "@id": "https://zoyla.com/#faq",
+                    "mainEntity": faqEntities
+                }
+            ]
+        };
+
+        jsonLdScript.textContent = JSON.stringify(schemaData, null, 2);
     }
 
     async saveSiteContent(newContent) {
@@ -196,6 +268,20 @@ class AppState {
         setVal("cms-diag-subtitle", c.diagSubtitle);
         setVal("cms-services-title", c.servicesTitle);
         setVal("cms-booking-title", c.bookingTitle);
+
+        // Campos Cuestionario SEO & FAQ
+        setVal("cms-pro-title", c.proTitle);
+        setVal("cms-brand-name", c.brandName);
+        setVal("cms-value-prop", c.valueProp);
+        setVal("cms-knows-about", c.knowsAbout);
+        setVal("cms-price-range", c.priceRange);
+        setVal("cms-location", c.location);
+        setVal("cms-faq1-q", c.faq1q);
+        setVal("cms-faq1-a", c.faq1a);
+        setVal("cms-faq2-q", c.faq2q);
+        setVal("cms-faq2-a", c.faq2a);
+        setVal("cms-faq3-q", c.faq3q);
+        setVal("cms-faq3-a", c.faq3a);
     }
 
     async initData() {
@@ -1339,21 +1425,40 @@ async function init() {
     if (contentForm) {
         contentForm.addEventListener("submit", async (e) => {
             e.preventDefault();
+            const getVal = (id) => {
+                const el = document.getElementById(id);
+                return el ? el.value : "";
+            };
+
             const newContent = {
-                heroBadge: document.getElementById("cms-hero-badge").value,
-                heroTitle: document.getElementById("cms-hero-title").value,
-                heroSubtitle: document.getElementById("cms-hero-subtitle").value,
-                aboutTitle: document.getElementById("cms-about-title").value,
-                aboutLead: document.getElementById("cms-about-lead").value,
-                aboutBody: document.getElementById("cms-about-body").value,
-                aboutQuote: document.getElementById("cms-about-quote").value,
-                diagTitle: document.getElementById("cms-diag-title").value,
-                diagSubtitle: document.getElementById("cms-diag-subtitle").value,
-                servicesTitle: document.getElementById("cms-services-title").value,
-                bookingTitle: document.getElementById("cms-booking-title").value
+                heroBadge: getVal("cms-hero-badge"),
+                heroTitle: getVal("cms-hero-title"),
+                heroSubtitle: getVal("cms-hero-subtitle"),
+                aboutTitle: getVal("cms-about-title"),
+                aboutLead: getVal("cms-about-lead"),
+                aboutBody: getVal("cms-about-body"),
+                aboutQuote: getVal("cms-about-quote"),
+                diagTitle: getVal("cms-diag-title"),
+                diagSubtitle: getVal("cms-diag-subtitle"),
+                servicesTitle: getVal("cms-services-title"),
+                bookingTitle: getVal("cms-booking-title"),
+
+                // Datos Cuestionario SEO & FAQ
+                proTitle: getVal("cms-pro-title"),
+                brandName: getVal("cms-brand-name"),
+                valueProp: getVal("cms-value-prop"),
+                knowsAbout: getVal("cms-knows-about"),
+                priceRange: getVal("cms-price-range"),
+                location: getVal("cms-location"),
+                faq1q: getVal("cms-faq1-q"),
+                faq1a: getVal("cms-faq1-a"),
+                faq2q: getVal("cms-faq2-q"),
+                faq2a: getVal("cms-faq2-a"),
+                faq3q: getVal("cms-faq3-q"),
+                faq3a: getVal("cms-faq3-a")
             };
             await state.saveSiteContent(newContent);
-            alert("¡Textos de la web actualizados con éxito!");
+            alert("¡Todos los datos de la web, metadatos SEO y Preguntas Frecuentes han sido guardados con éxito!");
         });
     }
 

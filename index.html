@@ -115,9 +115,9 @@
                 <div class="hero-bg-accent"></div>
                 <div class="container hero-container">
                     <div class="hero-content">
-                        <span class="badge">Bienvenida a tu transformación</span>
-                        <h1>Encuentra tu equilibrio y florece en tu propio camino</h1>
-                        <p class="hero-subtitle">Sesiones de coaching y terapia personalizadas para ayudarte a superar bloqueos, reconectar con tu esencia y diseñar una vida alineada con tu propósito.</p>
+                        <span class="badge" id="public-hero-badge">Bienvenida a tu transformación</span>
+                        <h1 id="public-hero-title">Encuentra tu equilibrio y florece en tu propio camino</h1>
+                        <p class="hero-subtitle" id="public-hero-subtitle">Sesiones de coaching y terapia personalizadas para ayudarte a superar bloqueos, reconectar con tu esencia y diseñar una vida alineada con tu propósito.</p>
                         <div class="hero-actions">
                             <a href="#booking" class="btn btn-primary btn-lg">Reserva una Sesión</a>
                             <a href="#services" class="btn btn-secondary btn-lg">Explorar Servicios</a>
@@ -154,9 +154,9 @@
                     <div class="about-grid">
                         <div class="about-info">
                             <span class="badge">Sobre Mí</span>
-                            <h2>Hola, soy Zoyla</h2>
-                            <p class="lead">Acompaño a personas en sus procesos de transición, autoconocimiento y empoderamiento personal.</p>
-                            <p>Mi enfoque combina herramientas de coaching existencial, terapia gestalt y mindfulness. Creo firmemente que cada persona posee los recursos necesarios para sanar y expandirse; mi labor es facilitar el espacio seguro, cálido y libre de juicio donde puedas redescubrirlos.</p>
+                            <h2 id="public-about-title">Hola, soy Zoyla</h2>
+                            <p class="lead" id="public-about-lead">Acompaño a personas en sus procesos de transición, autoconocimiento y empoderamiento personal.</p>
+                            <p id="public-about-body">Mi enfoque combina herramientas de coaching existencial, terapia gestalt y mindfulness. Creo firmemente que cada persona posee los recursos necesarios para sanar y expandirse; mi labor es facilitar el espacio seguro, cálido y libre de juicio donde puedas redescubrirlos.</p>
                             <div class="pillars">
                                 <div class="pillar-item">
                                     <div class="pillar-icon"><i data-lucide="shield-check"></i></div>
@@ -177,7 +177,7 @@
                         <div class="about-visual">
                             <div class="quotes-card">
                                 <i data-lucide="quote" class="quote-icon"></i>
-                                <p class="quote-text">"El cambio no ocurre cuando intentamos ser lo que no somos, sino cuando aceptamos plenamente lo que somos."</p>
+                                <p class="quote-text" id="public-about-quote">"El cambio no ocurre cuando intentamos ser lo que no somos, sino cuando aceptamos plenamente lo que somos."</p>
                                 <span class="quote-author">— Enfoque Terapéutico</span>
                             </div>
                     </div>
@@ -190,7 +190,7 @@
                     <div class="section-header">
                         <span class="badge">Método Terapéutico</span>
                         <h2 id="diagnostic-heading">¿Cómo identificamos y abordamos tu situación?</h2>
-                        <p class="section-subtitle">Un proceso estructurado para guiarte desde la inquietud inicial hasta el bienestar sostenido.</p>
+                        <p class="section-subtitle" id="public-diag-subtitle">Un proceso estructurado para guiarte desde la inquietud inicial hasta el bienestar sostenido.</p>
                     </div>
                     <div class="diagnostic-grid">
                         <article class="diagnostic-card step-symptom">
@@ -425,6 +425,11 @@
                                 <i data-lucide="activity"></i> Servicios
                             </button>
                         </li>
+                        <li>
+                            <button class="sidebar-link" data-tab="content-editor">
+                                <i data-lucide="file-text"></i> Textos de la Web
+                            </button>
+                        </li>
                     </ul>
                     <div class="sidebar-footer">
                         <button class="btn btn-text btn-block" id="admin-logout-btn">
@@ -590,6 +595,107 @@
                         <div class="services-settings-grid" id="admin-services-grid">
                             <!-- Loaded Dynamically -->
                         </div>
+                    </div>
+
+                    <!-- Content Editor Tab (CMS para Zoyla) -->
+                    <div class="admin-tab" id="tab-content-editor">
+                        <div class="admin-header">
+                            <div>
+                                <h1>Editar Textos de la Web</h1>
+                                <p class="subtitle">Modifica los títulos, subtítulos y textos principales del sitio público en tiempo real.</p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" id="btn-save-content-editor">
+                                <i data-lucide="save"></i> Guardar Todos los Cambios
+                            </button>
+                        </div>
+
+                        <form id="content-editor-form" class="content-editor-form">
+                            <!-- Bloque 1: Inicio (Hero) -->
+                            <div class="dash-card content-editor-card">
+                                <div class="card-header">
+                                    <h3>1. Sección de Inicio (Hero)</h3>
+                                </div>
+                                <div class="card-body form-grid">
+                                    <div class="form-group">
+                                        <label for="cms-hero-badge">Insignia / Frase Superior</label>
+                                        <input type="text" id="cms-hero-badge">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cms-hero-title">Título Principal (H1)</label>
+                                        <input type="text" id="cms-hero-title">
+                                    </div>
+                                    <div class="form-group span-2">
+                                        <label for="cms-hero-subtitle">Subtítulo Descriptivo</label>
+                                        <textarea id="cms-hero-subtitle" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bloque 2: Sobre Mí (About) -->
+                            <div class="dash-card content-editor-card">
+                                <div class="card-header">
+                                    <h3>2. Sección Sobre Mí</h3>
+                                </div>
+                                <div class="card-body form-grid">
+                                    <div class="form-group">
+                                        <label for="cms-about-title">Título de Sección</label>
+                                        <input type="text" id="cms-about-title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cms-about-lead">Frase Destacada (Lead)</label>
+                                        <input type="text" id="cms-about-lead">
+                                    </div>
+                                    <div class="form-group span-2">
+                                        <label for="cms-about-body">Texto de Presentación Principal</label>
+                                        <textarea id="cms-about-body" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group span-2">
+                                        <label for="cms-about-quote">Cita Terapéutica Destacada</label>
+                                        <input type="text" id="cms-about-quote">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bloque 3: Método Diagnóstico -->
+                            <div class="dash-card content-editor-card">
+                                <div class="card-header">
+                                    <h3>3. Sección Método Terapéutico (Diagnóstico)</h3>
+                                </div>
+                                <div class="card-body form-grid">
+                                    <div class="form-group">
+                                        <label for="cms-diag-title">Título del Método</label>
+                                        <input type="text" id="cms-diag-title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cms-diag-subtitle">Subtítulo de Explicación</label>
+                                        <input type="text" id="cms-diag-subtitle">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bloque 4: Títulos de Servicios y Reservas -->
+                            <div class="dash-card content-editor-card">
+                                <div class="card-header">
+                                    <h3>4. Cabeceras de Servicios y Asistente de Reserva</h3>
+                                </div>
+                                <div class="card-body form-grid">
+                                    <div class="form-group">
+                                        <label for="cms-services-title">Título Sección Servicios</label>
+                                        <input type="text" id="cms-services-title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cms-booking-title">Título Sección Reservas</label>
+                                        <input type="text" id="cms-booking-title">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions-sticky">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i data-lucide="check"></i> Guardar Cambios en la Web
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </section>
             </div>

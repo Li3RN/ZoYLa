@@ -119,12 +119,27 @@ if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY) {
     }
 }
 
+const DEFAULT_SITE_CONTENT = {
+    heroBadge: "Bienvenida a tu transformación",
+    heroTitle: "Encuentra tu equilibrio y florece en tu propio camino",
+    heroSubtitle: "Sesiones de coaching y terapia personalizadas para ayudarte a superar bloqueos, reconectar con tu esencia y diseñar una vida alineada con tu propósito.",
+    aboutTitle: "Hola, soy Zoyla",
+    aboutLead: "Acompaño a personas en sus procesos de transición, autoconocimiento y empoderamiento personal.",
+    aboutBody: "Mi enfoque combina herramientas de coaching existencial, terapia gestalt y mindfulness. Creo firmemente que cada persona posee los recursos necesarios para sanar y expandirse; mi labor es facilitar el espacio seguro, cálido y libre de juicio donde puedas redescubrirlos.",
+    aboutQuote: "\"El cambio no ocurre cuando intentamos ser lo que no somos, sino cuando aceptamos plenamente lo que somos.\"",
+    diagTitle: "¿Cómo identificamos y abordamos tu situación?",
+    diagSubtitle: "Un proceso estructurado para guiarte desde la inquietud inicial hasta el bienestar sostenido.",
+    servicesTitle: "Cómo podemos trabajar juntos",
+    bookingTitle: "Reserva tu sesión en línea"
+};
+
 // App State Management
 class AppState {
     constructor() {
         this.services = [];
         this.clients = [];
         this.appointments = [];
+        this.siteContent = this.loadLocal("zoyla_site_content", DEFAULT_SITE_CONTENT);
         this.isLoggedIn = this.loadLocal("zoyla_logged_in", false);
     }
 
@@ -137,14 +152,71 @@ class AppState {
         localStorage.setItem(key, JSON.stringify(data));
     }
 
+    applySiteContent() {
+        const c = this.siteContent || DEFAULT_SITE_CONTENT;
+        const setTxt = (id, txt) => {
+            const el = document.getElementById(id);
+            if (el && txt) el.innerText = txt;
+        };
+
+        setTxt("public-hero-badge", c.heroBadge);
+        setTxt("public-hero-title", c.heroTitle);
+        setTxt("public-hero-subtitle", c.heroSubtitle);
+        setTxt("public-about-title", c.aboutTitle);
+        setTxt("public-about-lead", c.aboutLead);
+        setTxt("public-about-body", c.aboutBody);
+        setTxt("public-about-quote", c.aboutQuote);
+        setTxt("public-diag-subtitle", c.diagSubtitle);
+
+        const headingDiag = document.getElementById("diagnostic-heading");
+        if (headingDiag && c.diagTitle) headingDiag.innerText = c.diagTitle;
+    }
+
+    async saveSiteContent(newContent) {
+        this.siteContent = { ...this.siteContent, ...newContent };
+        this.saveLocal("zoyla_site_content", this.siteContent);
+        this.applySiteContent();
+
+        if (supabaseClient) {
+            try {
+                for (const [key, value] of Object.entries(newContent)) {
+                    await supabaseClient.from('site_content').upsert({ key, value });
+                }
+            } catch(e) {
+                console.error("Error guardando site_content en Supabase:", e);
+            }
+        }
+    }
+
+    populateContentEditorForm() {
+        const c = this.siteContent || DEFAULT_SITE_CONTENT;
+        const setVal = (id, val) => {
+            const el = document.getElementById(id);
+            if (el && val !== undefined) el.value = val;
+        };
+
+        setVal("cms-hero-badge", c.heroBadge);
+        setVal("cms-hero-title", c.heroTitle);
+        setVal("cms-hero-subtitle", c.heroSubtitle);
+        setVal("cms-about-title", c.aboutTitle);
+        setVal("cms-about-lead", c.aboutLead);
+        setVal("cms-about-body", c.aboutBody);
+        setVal("cms-about-quote", c.aboutQuote);
+        setVal("cms-diag-title", c.diagTitle);
+        setVal("cms-diag-subtitle", c.diagSubtitle);
+        setVal("cms-services-title", c.servicesTitle);
+        setVal("cms-booking-title", c.bookingTitle);
+    }
+
     async initData() {
         // 1. Intentar cargar desde Supabase si está configurado
         if (supabaseClient) {
             try {
-                const [servRes, cliRes, appRes] = await Promise.all([
+                const [servRes, cliRes, appRes, cntRes] = await Promise.all([
                     supabaseClient.from('services').select('*'),
                     supabaseClient.from('clients').select('*, client_notes(note_date, note_text)'),
-                    supabaseClient.from('appointments').select('*')
+                    supabaseClient.from('appointments').select('*'),
+                    supabaseClient.from('site_content').select('*')
                 ]);
 
                 if (!servRes.error && !cliRes.error && !appRes.error) {
@@ -168,9 +240,19 @@ class AppState {
                         notes: a.notes
                     }));
 
+                    if (!cntRes.error && cntRes.data && cntRes.data.length > 0) {
+                        const fetchedContent = {};
+                        cntRes.data.forEach(item => {
+                            fetchedContent[item.key] = item.value;
+                        });
+                        this.siteContent = { ...DEFAULT_SITE_CONTENT, ...fetchedContent };
+                    }
+
                     this.saveLocal("zoyla_services", this.services);
                     this.saveLocal("zoyla_clients", this.clients);
                     this.saveLocal("zoyla_appointments", this.appointments);
+                    this.saveLocal("zoyla_site_content", this.siteContent);
+                    this.applySiteContent();
                     return;
                 }
             } catch(e) {
@@ -1076,6 +1158,10 @@ function switchAdminTab(tabName) {
         tab.classList.remove("active");
     });
     document.getElementById(`tab-${tabName}`).classList.add("active");
+
+    if (tabName === "content-editor") {
+        state.populateContentEditorForm();
+    }
 }
 
 function openModal(modalId) {
@@ -1280,6 +1366,29 @@ async function init() {
         renderAdminServices();
         renderServices();
     });
+
+    // Content Editor Form Submit (CMS para Zoyla)
+    const contentForm = document.getElementById("content-editor-form");
+    if (contentForm) {
+        contentForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const newContent = {
+                heroBadge: document.getElementById("cms-hero-badge").value,
+                heroTitle: document.getElementById("cms-hero-title").value,
+                heroSubtitle: document.getElementById("cms-hero-subtitle").value,
+                aboutTitle: document.getElementById("cms-about-title").value,
+                aboutLead: document.getElementById("cms-about-lead").value,
+                aboutBody: document.getElementById("cms-about-body").value,
+                aboutQuote: document.getElementById("cms-about-quote").value,
+                diagTitle: document.getElementById("cms-diag-title").value,
+                diagSubtitle: document.getElementById("cms-diag-subtitle").value,
+                servicesTitle: document.getElementById("cms-services-title").value,
+                bookingTitle: document.getElementById("cms-booking-title").value
+            };
+            await state.saveSiteContent(newContent);
+            alert("¡Textos de la web actualizados con éxito!");
+        });
+    }
 
     // Wizard
     setupWizard();

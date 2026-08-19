@@ -60,16 +60,25 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Deshabilitar RLS temporalmente o permitir lecturas/escrituras para clientes anónimos durante pruebas en Supabase
+-- 6. Tabla de Textos y Contenidos Editables del Sitio (CMS)
+CREATE TABLE IF NOT EXISTS site_content (
+    key VARCHAR(100) PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Habilitar permisos de lectura y escritura para pruebas en Supabase (Políticas RLS)
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE clients ENABLE ROW LEVEL SECURITY;
 ALTER TABLE client_notes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE appointments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_content ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Public full access to services" ON services FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Public full access to clients" ON clients FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Public full access to client_notes" ON client_notes FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Public full access to appointments" ON appointments FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Public full access to site_content" ON site_content FOR ALL USING (true) WITH CHECK (true);
 
 -- Datos Iniciales por Defecto
 INSERT INTO services (id, name, description, duration, price, icon) VALUES

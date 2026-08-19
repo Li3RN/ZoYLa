@@ -1872,3 +1872,119 @@ section {
         padding: 24px 16px;
     }
 }
+
+/* ==========================================================================
+   DIAGNOSTIC FLOW SECTION & ACCESSIBILITY (A11Y) STYLES
+   ========================================================================== */
+.diagnostic-section {
+    padding: 80px 0;
+    background-color: var(--neutral-light);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.diagnostic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.diagnostic-card {
+    background-color: var(--neutral-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 28px 24px;
+    position: relative;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.diagnostic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+}
+
+.diagnostic-card .step-badge {
+    align-self: flex-start;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.diagnostic-card.step-symptom .step-badge {
+    background-color: #FDF2F2;
+    color: #C53030;
+}
+
+.diagnostic-card.step-cause .step-badge {
+    background-color: #FEFCBF;
+    color: #744210;
+}
+
+.diagnostic-card.step-solution .step-badge {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.diagnostic-card.step-verification .step-badge {
+    background-color: #E6FFFA;
+    color: #234E52;
+}
+
+.diagnostic-card h3 {
+    font-size: 1.15rem;
+    font-family: var(--font-heading);
+    color: var(--neutral-dark);
+}
+
+.diagnostic-card p {
+    font-size: 0.92rem;
+    color: var(--neutral-gray);
+    line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+    .diagnostic-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .diagnostic-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Accessibility Focus States & Keyboard Nav */
+button:focus-visible, 
+a:focus-visible, 
+input:focus-visible, 
+select:focus-visible, 
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--primary) !important;
+    outline-offset: 3px !important;
+    border-radius: var(--radius-sm);
+}
+
+/* Screen reader only utility class */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

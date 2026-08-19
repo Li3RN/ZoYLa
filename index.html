@@ -3,43 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoyla | Coach & Terapeuta - Tu espacio de crecimiento</title>
-    <meta name="description" content="Espacio terapéutico y de coaching guiado por Zoyla. Agenda tus citas, gestiona tu bienestar y encuentra tu camino de crecimiento personal.">
+    <title>Zoyla | Terapia Gestalt, Coaching Ontológico y Mindfulness</title>
+    <meta name="description" content="Espacio profesional de terapia Gestalt, coaching ontológico y mindfulness por Zoyla. Reserva tu sesión online o presencial y transforma tu bienestar.">
+    <meta name="author" content="Zoyla">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://zoyla.com/">
+    <meta property="og:title" content="Zoyla | Terapia Gestalt & Coaching Ontológico">
+    <meta property="og:description" content="Acompañamiento holístico para superar bloqueos emocionales, reducir la ansiedad y alcanzar tus metas de vida.">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Zoyla | Terapia Gestalt & Coaching Ontológico">
+    <meta name="twitter:description" content="Espacio terapéutico profesional. Reserva de citas online para Terapia Gestalt, Coaching y Mindfulness.">
+
+    <!-- Agentic Context & LLM directives link -->
+    <link rel="author" type="text/plain" href="llms.txt">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Icons (Lucide Icons via CDN) -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Datos Estructurados Schema.org (JSON-LD) para SEO y Motores de IA -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "HealthAndBeautyBusiness",
+          "@id": "https://zoyla.com/#business",
+          "name": "Zoyla - Terapia Gestalt & Coaching",
+          "url": "https://zoyla.com/",
+          "description": "Espacio profesional de terapia Gestalt, coaching ontológico y mindfulness.",
+          "priceRange": "45€ - 70€",
+          "knowsAbout": ["Terapia Gestalt", "Coaching Ontológico", "Mindfulness", "Desarrollo Personal"],
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "ES"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://zoyla.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿En qué consiste la Terapia Individual Gestalt?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Es un enfoque terapéutico en el aquí y ahora para la gestión emocional, la resolución de bloqueos existenciales y la autoaceptación."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo me beneficia el Coaching Ontológico?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Te ayuda a redefinir metas de vida personales y profesionales superando creencias limitantes."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar" id="main-nav">
-        <div class="nav-container">
-            <a href="#hero" class="nav-logo" id="nav-logo-link">
-                <span class="logo-dot"></span>
-                Zoyla
-            </a>
-            <div class="nav-menu" id="nav-menu">
-                <a href="#hero" class="nav-link active">Inicio</a>
-                <a href="#about" class="nav-link">Sobre Mí</a>
-                <a href="#services" class="nav-link">Servicios</a>
-                <a href="#booking" class="btn btn-primary btn-sm">Reservar Cita</a>
-                <span class="nav-divider"></span>
-                <button class="btn btn-text btn-icon" id="admin-login-btn" title="Acceso Profesional">
-                    <i data-lucide="lock"></i>
-                    <span>Panel Pro</span>
+    <!-- Header principal semántico y accesible -->
+    <header class="site-header" role="banner">
+        <nav class="navbar" id="main-nav" aria-label="Navegación Principal">
+            <div class="nav-container">
+                <a href="#hero" class="nav-logo" id="nav-logo-link" aria-label="Página de inicio Zoyla">
+                    <span class="logo-dot" aria-hidden="true"></span>
+                    Zoyla
+                </a>
+                <div class="nav-menu" id="nav-menu" role="menubar">
+                    <a href="#hero" class="nav-link active" role="menuitem" aria-current="page">Inicio</a>
+                    <a href="#about" class="nav-link" role="menuitem">Sobre Mí</a>
+                    <a href="#services" class="nav-link" role="menuitem">Servicios</a>
+                    <a href="#booking" class="btn btn-primary btn-sm" role="menuitem">Reservar Cita</a>
+                    <span class="nav-divider" aria-hidden="true"></span>
+                    <button class="btn btn-text btn-icon" id="admin-login-btn" title="Acceso Profesional" aria-haspopup="dialog" aria-expanded="false">
+                        <i data-lucide="lock" aria-hidden="true"></i>
+                        <span>Panel Pro</span>
+                    </button>
+                </div>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="nav-menu">
+                    <i data-lucide="menu" aria-hidden="true"></i>
                 </button>
             </div>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
-                <i data-lucide="menu"></i>
-            </button>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <!-- App Wrapper for SPA Views -->
-    <main class="app-wrapper">
+    <!-- App Wrapper para SPA Views -->
+    <main class="app-wrapper" id="main-content">
         
         <!-- ========================================== -->
         <!-- PUBLIC VIEW                                -->
@@ -115,7 +180,42 @@
                                 <p class="quote-text">"El cambio no ocurre cuando intentamos ser lo que no somos, sino cuando aceptamos plenamente lo que somos."</p>
                                 <span class="quote-author">— Enfoque Terapéutico</span>
                             </div>
-                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diagnostic Content Flow Section (UI/UX Diagnóstico) -->
+            <section id="diagnostic-flow" class="diagnostic-section" aria-labelledby="diagnostic-heading">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge">Método Terapéutico</span>
+                        <h2 id="diagnostic-heading">¿Cómo identificamos y abordamos tu situación?</h2>
+                        <p class="section-subtitle">Un proceso estructurado para guiarte desde la inquietud inicial hasta el bienestar sostenido.</p>
+                    </div>
+                    <div class="diagnostic-grid">
+                        <article class="diagnostic-card step-symptom">
+                            <div class="step-badge">1. Necesidad / Síntoma</div>
+                            <h3>¿Sientes desbordamiento o bloqueo?</h3>
+                            <p>Ansiedad recurrente, sensación de vacío, patrones repetitivos o dificultad para tomar decisiones en tu vida personal o profesional.</p>
+                        </article>
+
+                        <article class="diagnostic-card step-cause">
+                            <div class="step-badge">2. Causa / Explicación</div>
+                            <h3>Desconexión mente-cuerpo</h3>
+                            <p>Las emociones no procesadas y las creencias limitantes inconscientes bloquean tu capacidad de respuesta ante el presente.</p>
+                        </article>
+
+                        <article class="diagnostic-card step-solution">
+                            <div class="step-badge">3. Solución / Acción</div>
+                            <h3>Acompañamiento integrado</h3>
+                            <p>Sesiones de Terapia Gestalt (conciencia emocional), Coaching Ontológico (plan de metas) y Mindfulness (calma corporal).</p>
+                        </article>
+
+                        <article class="diagnostic-card step-verification">
+                            <div class="step-badge">4. Verificación</div>
+                            <h3>Resultados sostenibles</h3>
+                            <p>Estrategias de autorregulación emocional y claridad de propósito respaldadas por más de 10 años de práctica clínica.</p>
+                        </article>
                     </div>
                 </div>
             </section>

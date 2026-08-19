@@ -106,9 +106,8 @@ const DEFAULT_APPOINTMENTS = [
 // ==========================================================================
 // SUPABASE CONFIGURATION
 // ==========================================================================
-// Rellena estas dos constantes con los datos de tu proyecto Supabase:
-const SUPABASE_URL = "https://rpmzfnufbfofglqanzxf.supabase.co";      // Ejemplo: "https://xxxxxxxx.supabase.co"
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwbXpmbnVmYmZvZmdscWFuenhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMjM2NzAsImV4cCI6MjEwMjY5OTY3MH0.7PMQ4nEorCgdG4LHovdL4XFpr5MUyKCFKVPYT-nWbzg"; // Tu anon key pública de Supabase
+const SUPABASE_URL = "https://rpmzfnufbfofglqanzxf.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwbXpmbnVmYmZvZmdscWFuenhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMjM2NzAsImV4cCI6MjEwMjY5OTY3MH0.7PMQ4nEorCgdG4LHovdL4XFpr5MUyKCFKVPYT-nWbzg";
 
 let supabaseClient = null;
 if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY) {
@@ -375,7 +374,8 @@ function showView(viewName) {
         publicView.classList.add("active");
         adminView.classList.remove("active");
         mainNav.style.display = "block";
-        mainFooter.style.display = "block";
+        if (mainFooter) mainFooter.style.display = "block";
+        document.title = "Zoyla | Terapia Gestalt, Coaching Ontológico y Mindfulness";
         window.scrollTo(0, 0);
     } else if (viewName === "admin") {
         if (!state.isLoggedIn) {
@@ -385,7 +385,8 @@ function showView(viewName) {
         publicView.classList.remove("active");
         adminView.classList.add("active");
         mainNav.style.display = "none";
-        mainFooter.style.display = "none";
+        if (mainFooter) mainFooter.style.display = "none";
+        document.title = "Panel de Administración Profesional | Zoyla PRO";
         renderAdminDashboard();
         renderAdminAppointments();
         renderAdminClients();
@@ -1078,11 +1079,19 @@ function switchAdminTab(tabName) {
 }
 
 function openModal(modalId) {
-    document.getElementById(modalId).classList.add("active");
+    const el = document.getElementById(modalId);
+    if (el) {
+        el.classList.add("active");
+        el.setAttribute("aria-hidden", "false");
+    }
 }
 
 function closeModal(modalId) {
-    document.getElementById(modalId).classList.remove("active");
+    const el = document.getElementById(modalId);
+    if (el) {
+        el.classList.remove("active");
+        el.setAttribute("aria-hidden", "true");
+    }
 }
 
 async function init() {
@@ -1114,9 +1123,12 @@ async function init() {
 
     // Mobile Navbar toggle
     const navToggle = document.getElementById("nav-toggle");
-    navToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("active");
-    });
+    if (navToggle) {
+        navToggle.addEventListener("click", () => {
+            const isActive = navMenu.classList.toggle("active");
+            navToggle.setAttribute("aria-expanded", isActive ? "true" : "false");
+        });
+    }
 
     // Admin Sidebar navigation
     document.querySelectorAll(".sidebar-link").forEach(btn => {

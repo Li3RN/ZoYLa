@@ -1,0 +1,26 @@
+# ZoYLa - Terapia Gestalt, Coaching Ontológico y Mindfulness
+
+> ZoYLa es una plataforma web profesional de bienestar, acompañamiento terapéutico y coaching ontológico diseñada para facilitar el autodescubrimiento, la resolución de bloqueos emocionales y la reserva de sesiones online o presenciales.
+
+## Información Principal de la Entidad
+- **Nombre de la Profesional:** ZoYLa
+- **Especialidades:** Terapia Individual Gestalt, Coaching Ontológico, Sesiones de Mindfulness y Manejo del Estrés.
+- **Enfoque Terapéutico:** Acompañamiento holístico enfocado en la aceptación, presencia en el aquí y ahora, y plan de acción transformador.
+
+## Servicios Ofrecidos
+- **Terapia Individual Gestalt:** Duración 60 min. Precio 60€. Enfoque en autodescubrimiento, gestión emocional y desbloqueo existencial.
+- **Coaching Ontológico:** Duración 60 min. Precio 70€. Redefinición de metas personales y profesionales, superación de creencias limitantes.
+- **Mindfulness y Relajación:** Duración 45 min. Precio 45€. Prácticas guiadas para reducción de estrés y regulación del sistema nervioso.
+
+## Estructura del Sitio Web y Navegación
+- `index.html#hero`: Presentación principal y propuesta de valor.
+- `index.html#about`: Trayectoria, valores y metodología.
+- `index.html#services`: Catálogo interactivo de servicios.
+- `index.html#booking`: Asistente de reserva paso a paso (Servicio -> Fecha/Hora -> Datos de contacto).
+- `index.html#admin`: Panel privado de gestión de clientes, citas y servicios para profesionales.
+
+## Integración y Endpoints de API REST / Supabase
+- `GET /api/services`: Obtiene el catálogo de servicios.
+- `GET /api/clients`: Obtiene la lista de clientes y notas clínicas.
+- `POST /api/appointments`: Registra una nueva reserva de cita.
+- `PUT /api/appointments/:id`: Actualiza el estado de una reserva (confirmada, completada, cancelada).

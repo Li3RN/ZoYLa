@@ -1195,7 +1195,6 @@ async function init() {
     // Logout
     document.getElementById("admin-logout-btn").addEventListener("click", () => {
         state.isLoggedIn = false;
-        state.saveAll();
         showView("public");
     });
 
@@ -1213,7 +1212,6 @@ async function init() {
 
         if (email === "zoyla@bienestar.com" && pass === "zoyla123") {
             state.isLoggedIn = true;
-            state.saveAll();
             closeModal("login-modal");
             showView("admin");
         } else {

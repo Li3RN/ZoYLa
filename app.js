@@ -103,29 +103,259 @@ const DEFAULT_APPOINTMENTS = [
     }
 ];
 
+// ==========================================================================
+// SUPABASE CONFIGURATION
+// ==========================================================================
+// Rellena estas dos constantes con los datos de tu proyecto Supabase:
+const SUPABASE_URL = "";      // Ejemplo: "https://xxxxxxxx.supabase.co"
+const SUPABASE_ANON_KEY = ""; // Tu anon key pública de Supabase
+
+let supabaseClient = null;
+if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY) {
+    try {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log("✅ Conectado a Supabase Client SDK");
+    } catch(e) {
+        console.error("Error inicializando Supabase:", e);
+    }
+}
+
 // App State Management
 class AppState {
     constructor() {
-        this.services = this.load("zoyla_services", DEFAULT_SERVICES);
-        this.clients = this.load("zoyla_clients", DEFAULT_CLIENTS);
-        this.appointments = this.load("zoyla_appointments", DEFAULT_APPOINTMENTS);
-        this.isLoggedIn = this.load("zoyla_logged_in", false);
+        this.services = [];
+        this.clients = [];
+        this.appointments = [];
+        this.isLoggedIn = this.loadLocal("zoyla_logged_in", false);
     }
 
-    load(key, defaultValue) {
+    loadLocal(key, defaultValue) {
         const data = localStorage.getItem(key);
         return data ? JSON.parse(data) : defaultValue;
     }
 
-    save(key, data) {
+    saveLocal(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
     }
 
+    async initData() {
+        // 1. Intentar cargar desde Supabase si está configurado
+        if (supabaseClient) {
+            try {
+                const [servRes, cliRes, appRes] = await Promise.all([
+                    supabaseClient.from('services').select('*'),
+                    supabaseClient.from('clients').select('*, client_notes(note_date, note_text)'),
+                    supabaseClient.from('appointments').select('*')
+                ]);
+
+                if (!servRes.error && !cliRes.error && !appRes.error) {
+                    this.services = servRes.data || [];
+                    this.clients = (cliRes.data || []).map(c => ({
+                        ...c,
+                        notes: (c.client_notes || []).map(n => ({ date: n.note_date, text: n.note_text }))
+                    }));
+                    this.appointments = (appRes.data || []).map(a => ({
+                        id: a.id,
+                        clientId: a.client_id,
+                        clientName: a.client_name,
+                        clientEmail: a.client_email,
+                        clientPhone: a.client_phone,
+                        serviceId: a.service_id,
+                        serviceName: a.service_name,
+                        date: a.appointment_date,
+                        time: a.appointment_time,
+                        price: parseFloat(a.price),
+                        status: a.status,
+                        notes: a.notes
+                    }));
+
+                    this.saveLocal("zoyla_services", this.services);
+                    this.saveLocal("zoyla_clients", this.clients);
+                    this.saveLocal("zoyla_appointments", this.appointments);
+                    return;
+                }
+            } catch(e) {
+                console.warn("Error leyendo de Supabase, recurriendo a API/localStorage:", e);
+            }
+        }
+
+        // 2. Intentar cargar desde API REST Backend
+        try {
+            const [servicesRes, clientsRes, appointmentsRes] = await Promise.all([
+                fetch('/api/services'),
+                fetch('/api/clients'),
+                fetch('/api/appointments')
+            ]);
+
+            if (servicesRes.ok && clientsRes.ok && appointmentsRes.ok) {
+                this.services = await servicesRes.json();
+                this.clients = await clientsRes.json();
+                this.appointments = await appointmentsRes.json();
+
+                this.saveLocal("zoyla_services", this.services);
+                this.saveLocal("zoyla_clients", this.clients);
+                this.saveLocal("zoyla_appointments", this.appointments);
+                return;
+            }
+        } catch (e) {
+            console.warn("API Backend no disponible, usando fallback localStorage:", e);
+        }
+
+        // 3. Fallback a localStorage o valores iniciales por defecto
+        this.services = this.loadLocal("zoyla_services", DEFAULT_SERVICES);
+        this.clients = this.loadLocal("zoyla_clients", DEFAULT_CLIENTS);
+        this.appointments = this.loadLocal("zoyla_appointments", DEFAULT_APPOINTMENTS);
+    }
+
+    async saveService(service, isEdit = false) {
+        if (isEdit) {
+            const index = this.services.findIndex(s => s.id === service.id);
+            if (index !== -1) this.services[index] = service;
+            if (supabaseClient) {
+                await supabaseClient.from('services').update(service).eq('id', service.id);
+            } else {
+                try {
+                    await fetch(`/api/services/${service.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(service)
+                    });
+                } catch(e) { console.error(e); }
+            }
+        } else {
+            this.services.push(service);
+            if (supabaseClient) {
+                await supabaseClient.from('services').insert([service]);
+            } else {
+                try {
+                    await fetch('/api/services', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(service)
+                    });
+                } catch(e) { console.error(e); }
+            }
+        }
+        this.saveLocal("zoyla_services", this.services);
+    }
+
+    async deleteService(serviceId) {
+        this.services = this.services.filter(s => s.id !== serviceId);
+        if (supabaseClient) {
+            await supabaseClient.from('services').delete().eq('id', serviceId);
+        } else {
+            try {
+                await fetch(`/api/services/${serviceId}`, { method: 'DELETE' });
+            } catch(e) { console.error(e); }
+        }
+        this.saveLocal("zoyla_services", this.services);
+    }
+
+    async saveClient(client) {
+        const existingIndex = this.clients.findIndex(c => c.id === client.id);
+        if (existingIndex !== -1) {
+            this.clients[existingIndex] = client;
+            if (supabaseClient) {
+                await supabaseClient.from('clients').update({ name: client.name, email: client.email, phone: client.phone }).eq('id', client.id);
+            } else {
+                try {
+                    await fetch(`/api/clients/${client.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(client)
+                    });
+                } catch(e) { console.error(e); }
+            }
+        } else {
+            this.clients.push(client);
+            if (supabaseClient) {
+                await supabaseClient.from('clients').insert([{ id: client.id, name: client.name, email: client.email, phone: client.phone }]);
+            } else {
+                try {
+                    await fetch('/api/clients', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(client)
+                    });
+                } catch(e) { console.error(e); }
+            }
+        }
+        this.saveLocal("zoyla_clients", this.clients);
+    }
+
+    async addClientNote(clientId, note) {
+        const client = this.clients.find(c => c.id === clientId);
+        if (client) {
+            if (!client.notes) client.notes = [];
+            client.notes.push(note);
+            if (supabaseClient) {
+                await supabaseClient.from('client_notes').insert([{ client_id: clientId, note_date: note.date, note_text: note.text }]);
+            } else {
+                try {
+                    await fetch(`/api/clients/${clientId}/notes`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(note)
+                    });
+                } catch(e) { console.error(e); }
+            }
+            this.saveLocal("zoyla_clients", this.clients);
+        }
+    }
+
+    async saveAppointment(appointment) {
+        this.appointments.push(appointment);
+        if (supabaseClient) {
+            await supabaseClient.from('appointments').insert([{
+                id: appointment.id,
+                client_id: appointment.clientId,
+                client_name: appointment.clientName,
+                client_email: appointment.clientEmail,
+                client_phone: appointment.clientPhone,
+                service_id: appointment.serviceId,
+                service_name: appointment.serviceName,
+                appointment_date: appointment.date,
+                appointment_time: appointment.time,
+                price: appointment.price,
+                status: appointment.status || 'confirmed',
+                notes: appointment.notes || ''
+            }]);
+        } else {
+            try {
+                await fetch('/api/appointments', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(appointment)
+                });
+            } catch(e) { console.error(e); }
+        }
+        this.saveLocal("zoyla_appointments", this.appointments);
+    }
+
+    async updateAppointmentStatus(appId, newStatus) {
+        const app = this.appointments.find(a => a.id === appId);
+        if (app) {
+            app.status = newStatus;
+            if (supabaseClient) {
+                await supabaseClient.from('appointments').update({ status: newStatus }).eq('id', appId);
+            } else {
+                try {
+                    await fetch(`/api/appointments/${appId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(app)
+                    });
+                } catch(e) { console.error(e); }
+            }
+            this.saveLocal("zoyla_appointments", this.appointments);
+        }
+    }
+
     saveAll() {
-        this.save("zoyla_services", this.services);
-        this.save("zoyla_clients", this.clients);
-        this.save("zoyla_appointments", this.appointments);
-        this.save("zoyla_logged_in", this.isLoggedIn);
+        this.saveLocal("zoyla_services", this.services);
+        this.saveLocal("zoyla_clients", this.clients);
+        this.saveLocal("zoyla_appointments", this.appointments);
+        this.saveLocal("zoyla_logged_in", this.isLoggedIn);
     }
 }
 
@@ -420,7 +650,7 @@ function setupWizard() {
     });
 
     // Form Submit
-    document.getElementById("booking-form").addEventListener("submit", (e) => {
+    document.getElementById("booking-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         
         const clientName = document.getElementById("client-name").value;
@@ -438,7 +668,7 @@ function setupWizard() {
                 phone: clientPhone,
                 notes: []
             };
-            state.clients.push(client);
+            await state.saveClient(client);
         }
 
         // 2. Create Appointment
@@ -457,8 +687,7 @@ function setupWizard() {
             notes: notes
         };
 
-        state.appointments.push(newApp);
-        state.saveAll();
+        await state.saveAppointment(newApp);
 
         // 3. Render Success
         document.getElementById("success-booking-code").innerText = `#Z-${newApp.id.substring(newApp.id.length - 4)}`;
@@ -619,14 +848,10 @@ function renderAdminAppointments() {
     }
 }
 
-window.changeAppStatus = function(appId, newStatus) {
-    const app = state.appointments.find(a => a.id === appId);
-    if (app) {
-        app.status = newStatus;
-        state.saveAll();
-        renderAdminAppointments();
-        renderAdminDashboard();
-    }
+window.changeAppStatus = async function(appId, newStatus) {
+    await state.updateAppointmentStatus(appId, newStatus);
+    renderAdminAppointments();
+    renderAdminDashboard();
 };
 
 // ==========================================================================
@@ -770,17 +995,15 @@ function renderClientDetail(clientId) {
     }
 
     // Attach event to new note
-    document.getElementById("add-note-form").addEventListener("submit", (e) => {
+    document.getElementById("add-note-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const text = document.getElementById("new-note-text").value;
-        if (!cli.notes) cli.notes = [];
-        
-        cli.notes.push({
+        const noteObj = {
             date: new Date().toISOString(),
             text: text
-        });
+        };
 
-        state.saveAll();
+        await state.addClientNote(clientId, noteObj);
         renderClientDetail(clientId);
     });
 }
@@ -831,10 +1054,9 @@ window.openEditServiceModal = function(serviceId) {
     }
 };
 
-window.deleteService = function(serviceId) {
+window.deleteService = async function(serviceId) {
     if (confirm("¿Estás seguro de que deseas eliminar este servicio? No se mostrará más para reservas.")) {
-        state.services = state.services.filter(s => s.id !== serviceId);
-        state.saveAll();
+        await state.deleteService(serviceId);
         renderAdminServices();
         renderServices();
     }
@@ -863,7 +1085,10 @@ function closeModal(modalId) {
     document.getElementById(modalId).classList.remove("active");
 }
 
-function init() {
+async function init() {
+    // Inicializar datos desde API Backend / DB
+    await state.initData();
+
     // Render Public Layout elements
     renderServices();
 
@@ -935,7 +1160,7 @@ function init() {
         openModal("add-client-modal");
     });
 
-    document.getElementById("add-client-form").addEventListener("submit", (e) => {
+    document.getElementById("add-client-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const name = document.getElementById("new-client-name").value;
         const email = document.getElementById("new-client-email").value;
@@ -949,8 +1174,7 @@ function init() {
             notes: []
         };
 
-        state.clients.push(newCli);
-        state.saveAll();
+        await state.saveClient(newCli);
         closeModal("add-client-modal");
         renderAdminClients();
         renderAdminDashboard();
@@ -974,7 +1198,7 @@ function init() {
         openModal("quick-appointment-modal");
     });
 
-    document.getElementById("quick-app-form").addEventListener("submit", (e) => {
+    document.getElementById("quick-app-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const clientId = document.getElementById("quick-app-client").value;
         const serviceId = document.getElementById("quick-app-service").value;
@@ -999,8 +1223,7 @@ function init() {
             notes: "Creada manualmente desde el panel de administración."
         };
 
-        state.appointments.push(newApp);
-        state.saveAll();
+        await state.saveAppointment(newApp);
         closeModal("quick-appointment-modal");
         
         renderAdminAppointments();
@@ -1015,7 +1238,7 @@ function init() {
         openModal("add-service-modal");
     });
 
-    document.getElementById("add-service-form").addEventListener("submit", (e) => {
+    document.getElementById("add-service-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const id = document.getElementById("edit-service-id").value;
         const name = document.getElementById("new-service-name").value;
@@ -1026,10 +1249,8 @@ function init() {
 
         if (id) {
             // Edit mode
-            const index = state.services.findIndex(s => s.id === id);
-            if (index !== -1) {
-                state.services[index] = { id, name, description, duration, price, icon };
-            }
+            const updatedService = { id, name, description, duration, price, icon };
+            await state.saveService(updatedService, true);
         } else {
             // Add mode
             const newService = {
@@ -1040,10 +1261,9 @@ function init() {
                 price,
                 icon
             };
-            state.services.push(newService);
+            await state.saveService(newService, false);
         }
 
-        state.saveAll();
         closeModal("add-service-modal");
         renderAdminServices();
         renderServices();

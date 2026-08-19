@@ -107,8 +107,8 @@ const DEFAULT_APPOINTMENTS = [
 // SUPABASE CONFIGURATION
 // ==========================================================================
 // Rellena estas dos constantes con los datos de tu proyecto Supabase:
-const SUPABASE_URL = "";      // Ejemplo: "https://xxxxxxxx.supabase.co"
-const SUPABASE_ANON_KEY = ""; // Tu anon key pública de Supabase
+const SUPABASE_URL = "https://rpmzfnufbfofglqanzxf.supabase.co";      // Ejemplo: "https://xxxxxxxx.supabase.co"
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwbXpmbnVmYmZvZmdscWFuenhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMjM2NzAsImV4cCI6MjEwMjY5OTY3MH0.7PMQ4nEorCgdG4LHovdL4XFpr5MUyKCFKVPYT-nWbzg"; // Tu anon key pública de Supabase
 
 let supabaseClient = null;
 if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY) {

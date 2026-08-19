@@ -139,17 +139,8 @@ class AppState {
         this.services = [];
         this.clients = [];
         this.appointments = [];
-        this.siteContent = this.loadLocal("zoyla_site_content", DEFAULT_SITE_CONTENT);
-        this.isLoggedIn = this.loadLocal("zoyla_logged_in", false);
-    }
-
-    loadLocal(key, defaultValue) {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : defaultValue;
-    }
-
-    saveLocal(key, data) {
-        localStorage.setItem(key, JSON.stringify(data));
+        this.siteContent = DEFAULT_SITE_CONTENT;
+        this.isLoggedIn = false;
     }
 
     applySiteContent() {
@@ -174,7 +165,6 @@ class AppState {
 
     async saveSiteContent(newContent) {
         this.siteContent = { ...this.siteContent, ...newContent };
-        this.saveLocal("zoyla_site_content", this.siteContent);
         this.applySiteContent();
 
         if (supabaseClient) {
@@ -209,7 +199,7 @@ class AppState {
     }
 
     async initData() {
-        // 1. Intentar cargar desde Supabase si está configurado
+        // 1. Cargar desde Supabase
         if (supabaseClient) {
             try {
                 const [servRes, cliRes, appRes, cntRes] = await Promise.all([
@@ -248,19 +238,15 @@ class AppState {
                         this.siteContent = { ...DEFAULT_SITE_CONTENT, ...fetchedContent };
                     }
 
-                    this.saveLocal("zoyla_services", this.services);
-                    this.saveLocal("zoyla_clients", this.clients);
-                    this.saveLocal("zoyla_appointments", this.appointments);
-                    this.saveLocal("zoyla_site_content", this.siteContent);
                     this.applySiteContent();
                     return;
                 }
             } catch(e) {
-                console.warn("Error leyendo de Supabase, recurriendo a API/localStorage:", e);
+                console.warn("Error leyendo de Supabase:", e);
             }
         }
 
-        // 2. Intentar cargar desde API REST Backend
+        // 2. Intentar cargar desde API REST Backend si no hay Supabase
         try {
             const [servicesRes, clientsRes, appointmentsRes] = await Promise.all([
                 fetch('/api/services'),
@@ -272,20 +258,16 @@ class AppState {
                 this.services = await servicesRes.json();
                 this.clients = await clientsRes.json();
                 this.appointments = await appointmentsRes.json();
-
-                this.saveLocal("zoyla_services", this.services);
-                this.saveLocal("zoyla_clients", this.clients);
-                this.saveLocal("zoyla_appointments", this.appointments);
                 return;
             }
         } catch (e) {
-            console.warn("API Backend no disponible, usando fallback localStorage:", e);
+            console.warn("API Backend no disponible:", e);
         }
 
-        // 3. Fallback a localStorage o valores iniciales por defecto
-        this.services = this.loadLocal("zoyla_services", DEFAULT_SERVICES);
-        this.clients = this.loadLocal("zoyla_clients", DEFAULT_CLIENTS);
-        this.appointments = this.loadLocal("zoyla_appointments", DEFAULT_APPOINTMENTS);
+        // Fallback a valores por defecto en memoria
+        this.services = DEFAULT_SERVICES;
+        this.clients = DEFAULT_CLIENTS;
+        this.appointments = DEFAULT_APPOINTMENTS;
     }
 
     async saveService(service, isEdit = false) {
@@ -317,7 +299,6 @@ class AppState {
                 } catch(e) { console.error(e); }
             }
         }
-        this.saveLocal("zoyla_services", this.services);
     }
 
     async deleteService(serviceId) {
@@ -329,7 +310,6 @@ class AppState {
                 await fetch(`/api/services/${serviceId}`, { method: 'DELETE' });
             } catch(e) { console.error(e); }
         }
-        this.saveLocal("zoyla_services", this.services);
     }
 
     async saveClient(client) {
@@ -361,7 +341,6 @@ class AppState {
                 } catch(e) { console.error(e); }
             }
         }
-        this.saveLocal("zoyla_clients", this.clients);
     }
 
     async addClientNote(clientId, note) {
@@ -380,7 +359,6 @@ class AppState {
                     });
                 } catch(e) { console.error(e); }
             }
-            this.saveLocal("zoyla_clients", this.clients);
         }
     }
 
@@ -410,7 +388,6 @@ class AppState {
                 });
             } catch(e) { console.error(e); }
         }
-        this.saveLocal("zoyla_appointments", this.appointments);
     }
 
     async updateAppointmentStatus(appId, newStatus) {
@@ -428,15 +405,7 @@ class AppState {
                     });
                 } catch(e) { console.error(e); }
             }
-            this.saveLocal("zoyla_appointments", this.appointments);
         }
-    }
-
-    saveAll() {
-        this.saveLocal("zoyla_services", this.services);
-        this.saveLocal("zoyla_clients", this.clients);
-        this.saveLocal("zoyla_appointments", this.appointments);
-        this.saveLocal("zoyla_logged_in", this.isLoggedIn);
     }
 }
 
